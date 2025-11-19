@@ -7,9 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type"],
+    origin: "https://mybots-1.onrender.com",
   })
 );
 
@@ -69,11 +67,7 @@ app.post("/api/bots", async (req, res) => {
         .filter((d) => d.length > 0);
     }
 
-    if (!Array.isArray(dominiosArray)) {
-      dominiosArray = [];
-    }
-
-    console.log("Dominios a guardar:", dominiosArray);
+    if (!Array.isArray(dominiosArray)) dominiosArray = [];
 
     const result = await pool.query(
       `INSERT INTO bots 
@@ -93,7 +87,6 @@ app.post("/api/bots", async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    console.error("Error en POST /api/bots:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -120,11 +113,7 @@ app.put("/api/bots/:id", async (req, res) => {
         .filter((d) => d.length > 0);
     }
 
-    if (!Array.isArray(dominiosArray)) {
-      dominiosArray = [];
-    }
-
-    console.log("Dominios a actualizar:", dominiosArray);
+    if (!Array.isArray(dominiosArray)) dominiosArray = [];
 
     const result = await pool.query(
       `UPDATE bots 
@@ -155,7 +144,6 @@ app.put("/api/bots/:id", async (req, res) => {
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error("Error en PUT /api/bots:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -179,5 +167,5 @@ app.delete("/api/bots/:id", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor en puerto ${PORT}`);
 });
