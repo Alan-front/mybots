@@ -1,8 +1,6 @@
 import express from "express";
 import cors from "cors";
 import pool from "./db.js";
-import path from "path";
-import { fileURLToPath } from "url";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,7 +14,11 @@ app.use(
 app.use(express.json());
 
 app.use((req, res, next) => {
+  console.log(`\n========================================`);
   console.log(`${req.method} ${req.url}`);
+  console.log("Headers:", req.headers);
+  console.log("Body:", req.body);
+  console.log(`========================================\n`);
   next();
 });
 
@@ -35,7 +37,7 @@ app.get("/api/bots/:id", async (req, res) => {
     const result = await pool.query("SELECT * FROM bots WHERE id = $1", [id]);
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: "bot no encontrado" });
+      return res.status(404).json({ error: "Bot no encontrado" });
     }
 
     res.json(result.rows[0]);
@@ -68,10 +70,10 @@ app.post("/api/bots", async (req, res) => {
     if (!Array.isArray(dominiosArray)) dominiosArray = [];
 
     const result = await pool.query(
-      `insert into bots 
+      `INSERT INTO bots 
       (nombre, token, prompt_base, tipo, tema, provider, allowed_domains)
-      values ($1, $2, $3, $4, $5, $6, $7)
-      returning *`,
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING *`,
       [
         nombre,
         token,
@@ -114,16 +116,16 @@ app.put("/api/bots/:id", async (req, res) => {
     if (!Array.isArray(dominiosArray)) dominiosArray = [];
 
     const result = await pool.query(
-      `update bots 
-      set nombre = $1,
+      `UPDATE bots 
+      SET nombre = $1,
           token = $2,
           prompt_base = $3,
           tipo = $4,
           tema = $5,
           provider = $6,
           allowed_domains = $7
-      where id = $8
-      returning *`,
+      WHERE id = $8
+      RETURNING *`,
       [
         nombre,
         token,
@@ -137,7 +139,7 @@ app.put("/api/bots/:id", async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: "bot no encontrado" });
+      return res.status(404).json({ error: "Bot no encontrado" });
     }
 
     res.json(result.rows[0]);
@@ -150,29 +152,20 @@ app.delete("/api/bots/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query(
-      "delete from bots where id = $1 returning *",
+      "DELETE FROM bots WHERE id = $1 RETURNING *",
       [id]
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: "bot no encontrado" });
+      return res.status(404).json({ error: "Bot no encontrado" });
     }
 
-    res.json({ message: "bot eliminado" });
+    res.json({ message: "Bot eliminado" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-app.use(express.static(path.join(__dirname, "dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
-});
-
 app.listen(PORT, () => {
-  console.log(`server en puerto ${PORT}`);
+  console.log(`🚀 Servidor en puerto ${PORT}`);
 });
