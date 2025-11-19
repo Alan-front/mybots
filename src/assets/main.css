@@ -1,0 +1,23 @@
+:root {
+  /* colores de marca */
+  --color-brand: #14b8a6;
+  --color-brand-dark: #0d9488;
+
+  /* modo claro */
+  --header-bg-color: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  --header-text-color: rgb(255, 255, 255);
+  --panel-bg-color: rgba(225, 243, 245, 0.849);
+  --panel-text-color: rgb(31, 41, 55);
+  --bg-text-color: rgb(201, 204, 207);
+  --panel-text-color-alt: rgb(31, 41, 55);
+}
+
+/* modo dark */
+[data-theme="dark"] {
+  --header-bg-color: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+  --header-text-color: rgb(255, 255, 255);
+  --panel-bg-color: rgb(17, 24, 39);
+  --panel-text-color: rgb(243, 244, 246);
+  --bg-text-color: rgb(31, 41, 55);
+  --panel-text-color-alt: rgba(219, 213, 213, 0.897);
+}
