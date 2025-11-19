@@ -18,4 +18,10 @@ pool.on("error", (err) => {
   console.error("❌ Error en PostgreSQL:", err);
 });
 
+// test conexión
+pool
+  .query("SELECT NOW()")
+  .then((res) => console.log("✅ BD conectada:", res.rows[0]))
+  .catch((err) => console.error("❌ Error conectando a BD:", err));
+
 export default pool;
