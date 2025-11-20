@@ -28,7 +28,9 @@ watch(
 
 const obtenerBot = async () => {
   try {
-    fetch(`https://mybots-mwf4.onrender.com/api/bots/${botId}`);
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/bots/${botId}`
+    );
 
     bot.value = await response.json();
 

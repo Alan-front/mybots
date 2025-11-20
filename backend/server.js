@@ -7,7 +7,11 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin: "https://mybots-1.onrender.com",
+    origin: [
+      "https://mybots-1.onrender.com",
+      "https://mybots-mwf4.onrender.com",
+    ],
+    credentials: false,
   })
 );
 
