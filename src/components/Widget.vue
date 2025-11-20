@@ -28,7 +28,8 @@ watch(
 
 const obtenerBot = async () => {
   try {
-    const response = await fetch(`http://localhost:3000/api/bots/${botId}`);
+    fetch(`https://mybots-mwf4.onrender.com/api/bots/${botId}`);
+
     bot.value = await response.json();
 
     messages.value.push({
