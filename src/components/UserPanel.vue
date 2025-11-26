@@ -138,9 +138,9 @@ const eliminarBot = async (id) => {
 };
 
 const crearIframe = (id) => {
-  const url = `${window.location.origin}/widget/${id}`;
+  const url = `${import.meta.env.VITE_API_URL}/widget/${id}`;
   prompt(
-    "Copia el siguiente código iframe para integrar el bot en tu sitio web:",
+    "Copia el siguiente código iframe:",
     `<iframe src="${url}" width="400" height="600" frameborder="0"></iframe>`
   );
 };

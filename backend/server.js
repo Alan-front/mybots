@@ -10,6 +10,7 @@ app.use(
     origin: [
       "https://mybots-1.onrender.com",
       "https://mybots-mwf4.onrender.com",
+      "http://localhost:5173",
     ],
     credentials: false,
   })
