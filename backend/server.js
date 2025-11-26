@@ -27,6 +27,10 @@ app.use((req, res, next) => {
   next();
 });
 
+/* ===========================
+      RUTAS API CRUD
+=========================== */
+
 app.get("/api/bots", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM bots ORDER BY id DESC");
@@ -50,6 +54,37 @@ app.get("/api/bots/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+/* ===========================
+      RUTA WIDGET HTML
+=========================== */
+
+app.get("/widget/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query("SELECT * FROM bots WHERE id = $1", [id]);
+    if (result.rows.length === 0)
+      return res.status(404).send("Bot no encontrado");
+
+    const bot = result.rows[0];
+
+    res.send(`
+      <html>
+        <body>
+          <h2>${bot.nombre}</h2>
+          <p>${bot.prompt_base}</p>
+        </body>
+      </html>
+    `);
+  } catch (error) {
+    res.status(500).send("Error interno");
+  }
+});
+
+/* ===========================
+         POST
+=========================== */
 
 app.post("/api/bots", async (req, res) => {
   try {
@@ -100,6 +135,10 @@ app.post("/api/bots", async (req, res) => {
     res.status(500).json({ error: error.message, detail: error.detail });
   }
 });
+
+/* ===========================
+          PUT
+=========================== */
 
 app.put("/api/bots/:id", async (req, res) => {
   try {
@@ -158,6 +197,10 @@ app.put("/api/bots/:id", async (req, res) => {
   }
 });
 
+/* ===========================
+         DELETE
+=========================== */
+
 app.delete("/api/bots/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -175,6 +218,10 @@ app.delete("/api/bots/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+/* ===========================
+      SERVIDOR
+=========================== */
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor en puerto ${PORT}`);
