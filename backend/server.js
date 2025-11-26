@@ -62,6 +62,10 @@ app.post("/api/bots", async (req, res) => {
       allowed_domains,
     } = req.body;
 
+    if (!nombre || !token) {
+      return res.status(400).json({ error: "Nombre y token requeridos" });
+    }
+
     let dominiosArray = allowed_domains || [];
 
     if (typeof dominiosArray === "string") {
@@ -81,9 +85,9 @@ app.post("/api/bots", async (req, res) => {
       [
         nombre,
         token,
-        prompt_base,
-        tipo,
-        tema,
+        prompt_base || "",
+        tipo || "general",
+        tema || "",
         provider || "groq",
         JSON.stringify(dominiosArray),
       ]
@@ -91,7 +95,8 @@ app.post("/api/bots", async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error POST:", error);
+    res.status(500).json({ error: error.message, detail: error.detail });
   }
 });
 
